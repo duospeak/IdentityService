@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Commands;
+﻿using Application.Commands;
 using Application.Models;
 using Application.Queries;
 using Domain.Enumerations;
+using IdentityServer4;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -47,6 +47,16 @@ namespace Identity.Api.Controllers
             return status;
         }
 
+        [HttpPost("cookie")]
+        public async Task<SignInResult> SignIn([FromBody]SignInCommand command)
+        {
+            var principal = await _mediator.Send(command, HttpContext.RequestAborted);
 
+            return SignIn(principal, IdentityServerConstants.DefaultCookieAuthenticationScheme);
+        }
+
+        [Authorize]
+        public SignOutResult SignOut() 
+            => SignOut(IdentityServerConstants.DefaultCookieAuthenticationScheme);
     }
 }

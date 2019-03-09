@@ -3,16 +3,12 @@ using Identity.Api.Internal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -86,9 +82,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 parameters = default(RSAParameters)
             });
 
-            var securityKey = new RsaSecurityKey(securityKeySource.parameters);
-
-            securityKey.KeyId = securityKeySource.keyId;
+            var securityKey = new RsaSecurityKey(securityKeySource.parameters)
+            {
+                KeyId = securityKeySource.keyId
+            };
 
             builder.AddSigningCredential(securityKey);
 
@@ -96,7 +93,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.TokenValidationParameters.IssuerSigningKey = securityKey;
-                    options.TokenValidationParameters.ValidIssuer = "https://supplychain.com";
+                    options.TokenValidationParameters.ValidIssuer = issuerUri;
                     options.Audience = "identityservice";
                 });
 

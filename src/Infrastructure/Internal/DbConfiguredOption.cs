@@ -2,7 +2,7 @@
 using Infrastructure.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
-using MySql.Data.MySqlClient;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,7 +23,7 @@ namespace Infrastructure.Internal
         {
             if (_existingOptions == null)
             {
-                using (var connection = new MySqlConnection(_options.ConnectionString))
+                using (var connection = new NpgsqlConnection(_options.ConnectionString))
                 {
                     _existingOptions = connection.QueryFirstOrDefault<IdentityServiceOptions>(GetPrepareSql());
                 }
