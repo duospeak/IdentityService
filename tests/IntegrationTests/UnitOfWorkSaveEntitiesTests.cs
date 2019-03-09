@@ -13,8 +13,8 @@ namespace IntegrationTests
         [DockerFact]
         public async Task AddAndGetReturnsObject()
         {
+            await StartNpgsqlServer();
 
-            await CreateNpgSqlServerContainerIfNotExistAsync();
             var username = Guid.NewGuid().ToString();
             // adding
         }
