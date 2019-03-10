@@ -19,6 +19,7 @@ namespace Domain.AggregatesModel
             UserName = userName.NotNull(nameof(userName));
             Password = password.NotNull(nameof(password));
             CreateTime = DateTimeOffset.UtcNow;
+            Status = UserStatus.AwaitingActive;
             AddDomainEvent(new UserCreatedEvent(Id, UserName, CreateTime));
         }
         public string UserName { get; private set; }
@@ -53,6 +54,9 @@ namespace Domain.AggregatesModel
             Status = UserStatus.Blocked;
         }
 
-
+        public override string ToString()
+        {
+            return $"Id:{Id}  UserName:{UserName}  CreateTime:{CreateTime}";
+        }
     }
 }

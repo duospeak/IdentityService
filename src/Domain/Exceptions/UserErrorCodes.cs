@@ -8,5 +8,6 @@ namespace Domain.Exceptions
     {
         public const string StatusError = "USER_STATUS_ERROR";
         public const string SignedUp = "USER_SIGNED_UP";
+        public const string SignInError = "SIGN_IN_ERROR";
     }
 }

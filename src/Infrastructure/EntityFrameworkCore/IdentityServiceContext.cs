@@ -2,6 +2,7 @@
 using Domain.SeedWork;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,11 @@ namespace Infrastructure.EntityFrameworkCore
     public class IdentityServiceContext : DbContext, IUnitOfWork
     {
         private readonly ICapPublisher _publisher;
+
+        public IdentityServiceContext(DbContextOptions<IdentityServiceContext> options, ICapPublisher publisher) 
+            : base(options)
+            => _publisher = publisher.NotNull(nameof(publisher));
+
         public DbSet<IdentityServiceOptions> ServiceOptions { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }

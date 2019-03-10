@@ -1,4 +1,5 @@
-﻿using Infrastructure.EntityFrameworkCore;
+﻿using Infrastructure;
+using Infrastructure.EntityFrameworkCore;
 using Infrastructure.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Reflection;
 
-namespace Infrastructure
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class InfraServiceCollectionExtensions
     {

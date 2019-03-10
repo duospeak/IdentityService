@@ -9,6 +9,9 @@ namespace Application.Models
     {
         public UserStatus Status { get; set; }
 
+        public long Id { get; set; }
 
+        public string UserName { get; set; }
+        
     }
 }

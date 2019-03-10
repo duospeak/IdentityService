@@ -2,9 +2,12 @@
 using Application.Models;
 using Application.Queries;
 using Domain.Enumerations;
+using Identity.Api.Extensions;
 using IdentityServer4;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -14,7 +17,7 @@ using System.Threading.Tasks;
 namespace Identity.Api.Controllers
 {
     [ApiController]
-    [Route("user/manager")]
+    [Route("user")]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -50,13 +53,20 @@ namespace Identity.Api.Controllers
         [HttpPost("cookie")]
         public async Task<SignInResult> SignIn([FromBody]SignInCommand command)
         {
-            var principal = await _mediator.Send(command, HttpContext.RequestAborted);
+            var user = await _mediator.Send(command, HttpContext.RequestAborted);
 
-            return SignIn(principal, IdentityServerConstants.DefaultCookieAuthenticationScheme);
+            var properties = new AuthenticationProperties()
+            {
+                AllowRefresh = true,
+                IsPersistent = command.RememberMe,
+                IssuedUtc = DateTimeOffset.UtcNow
+            };
+
+            return SignIn(user.ToPrincipal(), properties, IdentityServerConstants.DefaultCookieAuthenticationScheme);
         }
 
         [Authorize]
-        public SignOutResult SignOut() 
+        public SignOutResult SignOut()
             => SignOut(IdentityServerConstants.DefaultCookieAuthenticationScheme);
     }
 }

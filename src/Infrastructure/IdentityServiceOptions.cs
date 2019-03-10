@@ -6,6 +6,7 @@ namespace Infrastructure
 {
     public class IdentityServiceOptions
     {
+        public long Id { get; set; }
         public bool EmailVerificationFlow { get; set; }
 
         public bool PhoneVerificationFlow { get; set; }

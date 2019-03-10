@@ -11,9 +11,13 @@ namespace Infrastructure.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly IdentityServiceContext _context;
-        public IUnitOfWork UnitOfWork { get; }
 
-        public async Task<ApplicationUser> AddAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public UserRepository(IdentityServiceContext context)
+            => _context = context.NotNull(nameof(context));
+
+        public IUnitOfWork UnitOfWork => _context;
+
+        public async Task<ApplicationUser> AddAsync(ApplicationUser user, CancellationToken cancellationToken = default)
         {
             user.NotNull(nameof(user));
 
@@ -21,8 +25,10 @@ namespace Infrastructure.Repositories
 
             return entry.Entity;
         }
-        public async Task<ApplicationUser> GetAsync(string userName, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ApplicationUser> GetAsync(string userName, CancellationToken cancellationToken = default)
         {
+            userName.NotNull(nameof(userName));
+
             var user = await _context.ApplicationUser
                   .FirstOrDefaultAsync(x => x.UserName == userName, cancellationToken);
 
