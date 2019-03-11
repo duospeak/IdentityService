@@ -1,6 +1,7 @@
 ﻿using Application.Commands;
 using Application.Models;
 using Application.Queries;
+using Domain.Enumerations;
 using Identity.Api.Controllers;
 using IdentityServer4;
 using MediatR;
@@ -24,14 +25,12 @@ namespace UnitTests.ControllerTests
     {
         private readonly Mock<IMediator> _mediatorMock;
         private readonly Mock<IUserQueries> _queriesMock;
-        //private readonly Mock<ISystemClock> _clockMock;
         public UserControllerTests()
         {
             _repository = new MockRepository(MockBehavior.Strict);
 
             _mediatorMock = _repository.Create<IMediator>();
             _queriesMock = _repository.Create<IUserQueries>();
-            //_clockMock = _repository.Create<ISystemClock>();
         }
 
         private readonly MockRepository _repository;
@@ -80,7 +79,7 @@ namespace UnitTests.ControllerTests
         public async Task SignUp_Should_Call_Mediator_And_Return_User()
         {
             // arrange
-            var parameter = new SignUpCommand();
+            var parameter = Factory.CreateTestSignUpCommand();
             var result = Factory.CreateTestUserDto();
             _mediatorMock.Setup(x => x.Send(It.Is<SignUpCommand>(p => ReferenceEquals(p, parameter)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result)
@@ -93,6 +92,30 @@ namespace UnitTests.ControllerTests
             // assert
             Assert.NotNull(response);
             Assert.Same(response.Value, result);
+        }
+
+        [Fact]
+        public void SignOut_Ok()
+        {
+            var controller = CreateController();
+
+            var result = controller.SignOut();
+
+            Assert.NotNull(result);
+            Assert.Equal(IdentityServerConstants.DefaultCookieAuthenticationScheme, Assert.Single(result.AuthenticationSchemes));
+        }
+
+        [Fact]
+        public async Task CheckUserStatus_CallQueryApi()
+        {
+            var controller = CreateController();
+            _queriesMock.Setup(x => x.QueryStatusByUserIdAsync(It.Is<long>(id => id == 1), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(default(UserStatus?))
+                .Verifiable();
+
+            var result = await controller.Status(1);
+
+            Assert.Null(result.Value);
         }
     }
 }

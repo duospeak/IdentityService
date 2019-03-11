@@ -16,7 +16,7 @@ namespace Application.Queries
 
         Task<IEnumerable<UserListDto>> QueryActivedMemberUsersAsync(int offset, int count, CancellationToken cancellationToken = default);
 
-        Task<UserStatus> QueryStatusByUserIdAsync(long userId, CancellationToken cancellationToken = default);
+        Task<UserStatus?> QueryStatusByUserIdAsync(long userId, CancellationToken cancellationToken = default);
 
         Task<UserDto> QueryMemberUserByIdAsync(long userId, CancellationToken cancellationToken = default);
 

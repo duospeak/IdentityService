@@ -59,5 +59,14 @@ namespace UnitTests.Internal
 
             return user;
         }
+
+        public static SignUpCommand CreateTestSignUpCommand(string username = TestUserName, string password = TestPassword)
+        {
+            return new SignUpCommand()
+            {
+                UserName = username,
+                Password = password
+            };
+        }
     }
 }

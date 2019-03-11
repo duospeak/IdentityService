@@ -36,6 +36,6 @@ namespace Application.Queries
         public Task<IEnumerable<UserListDto>> QueryManagersAsync(int offset, int count, CancellationToken cancellationToken = default) => throw new NotImplementedException();
         public Task<UserDto> QueryMemberUserByIdAsync(long userId, CancellationToken cancellationToken = default) => throw new NotImplementedException();
         public Task<IEnumerable<UserListDto>> QueryMemberUsersAsync(int offset, int count, CancellationToken cancellationToken = default) => throw new NotImplementedException();
-        public Task<UserStatus> QueryStatusByUserIdAsync(long userId, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public Task<UserStatus?> QueryStatusByUserIdAsync(long userId, CancellationToken cancellationToken = default) => throw new NotImplementedException();
     }
 }

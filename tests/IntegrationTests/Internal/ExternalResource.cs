@@ -7,6 +7,7 @@ namespace IntegrationTests.Internal
     public enum ExternalResource
     {
         Postgresql,
-        RabbitMQ
+        RabbitMQ,
+        LocalMachinePort
     }
 }

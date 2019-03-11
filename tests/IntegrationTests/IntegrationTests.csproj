@@ -19,6 +19,10 @@
     <ProjectReference Include="..\..\src\Identity.Api\Identity.Api.csproj" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties testsettings_1json__JsonSchema="http://json.schemastore.org/appsettings" /></VisualStudio></ProjectExtensions>
+  <ItemGroup>
+    <None Update="devkey.rsa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

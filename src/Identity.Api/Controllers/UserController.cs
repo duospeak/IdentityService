@@ -43,7 +43,7 @@ namespace Identity.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("status/{id}")]
-        public async Task<ActionResult<UserStatus>> Status(long id)
+        public async Task<ActionResult<UserStatus?>> Status(long id)
         {
             var status = await _queries.QueryStatusByUserIdAsync(id, HttpContext.RequestAborted);
 

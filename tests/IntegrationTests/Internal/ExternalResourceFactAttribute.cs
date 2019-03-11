@@ -79,6 +79,20 @@ namespace IntegrationTests.Internal
             return true;
         }
 
+        private bool TryGetMachinePort(out string message)
+        {
+            message = "There are available port";
+
+            if (TestConfig.GetAvailablePort() == -1)
+            {
+                message = "No available port to perform test action";
+
+                return false;
+            }
+
+            return true;
+        }
+
         public ExternalResourceFactAttribute(params ExternalResource[] resources)
         {
             if (Skip == null && resources.Contains(ExternalResource.Postgresql))
@@ -89,6 +103,11 @@ namespace IntegrationTests.Internal
             if (Skip == null && resources.Contains(ExternalResource.RabbitMQ))
             {
                 Skip = TryAccessRabbitMQ(out var failureMessage) ? null : GetFormatedSkipReason(ExternalResource.RabbitMQ, failureMessage);
+            }
+
+            if(Skip==null&& resources.Contains(ExternalResource.LocalMachinePort))
+            {
+                Skip = TryGetMachinePort(out var failureMessage) ? null : GetFormatedSkipReason(ExternalResource.LocalMachinePort, failureMessage);
             }
         }
 
