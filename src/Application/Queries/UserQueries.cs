@@ -25,7 +25,7 @@ namespace Application.Queries
         {
             using (var connection = new NpgsqlConnection(_options.ConnectionString))
             {
-                return await connection.QueryAsync<UserListDto>("SELECT UserName,Status FROM ApplicationUser limit @count offset @offset", new
+                return await connection.QueryAsync<UserListDto>("SELECT \"UserName\",\"Status\" FROM \"ApplicationUser\" limit @count offset @offset", new
                 {
                     offset,
                     count

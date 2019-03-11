@@ -1,10 +1,9 @@
 ﻿using Identity.Api;
+using Infrastructure.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Npgsql;
+using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IntegrationTests.Internal
 {
@@ -32,6 +31,25 @@ namespace IntegrationTests.Internal
                     HostName = host
                 };
             }
+        }
+
+        public static IdentityServiceContext EnsureTestDatabaseCreated(string connectionString)
+        {
+            var container = new ServiceCollection()
+                .AddDbContext<IdentityServiceContext>(options => {
+                    options.UseNpgsql(connectionString);
+                })
+                .AddCap(options =>
+                {
+                    options.UsePostgreSql(connectionString);
+                }).Services.BuildServiceProvider(false);
+
+            using (container)
+            {
+                return null;
+            }
+
+            //using(var context=)
         }
     }
 }

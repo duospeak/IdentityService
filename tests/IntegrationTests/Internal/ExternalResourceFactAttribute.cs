@@ -30,6 +30,17 @@ namespace IntegrationTests.Internal
                     connection.Open();
                 }
             }
+            catch(PostgresException pg)
+            {
+                // database dosen't exist
+                if (pg.SqlState == "3D000")
+                {
+                    return true;
+                }
+
+                message = pg.Message;
+                return false;
+            }
             catch (Exception ex)
             {
                 message = ex.Message;
