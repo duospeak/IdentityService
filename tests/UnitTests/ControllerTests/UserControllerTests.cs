@@ -87,7 +87,7 @@ namespace UnitTests.ControllerTests
             var controller = CreateController();
 
             // act
-            var response = await controller.Post(parameter);
+            var response = await controller.SignUp(parameter);
 
             // assert
             Assert.NotNull(response);

@@ -26,15 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var source = new InfraOptions();
                 optionAction(source);
 
-                options.Version = source.RabbitMQ.MessageVersion ?? options.Version;
-                options.DefaultGroup = source.RabbitMQ.QueueName ?? options.DefaultGroup;
-                options.UseRabbitMQ(rabbitmq =>
-                {
-                    rabbitmq.UserName = source.RabbitMQ.UserName ?? rabbitmq.UserName;
-                    rabbitmq.Password = source.RabbitMQ.Password ?? rabbitmq.Password;
-                    rabbitmq.HostName = source.RabbitMQ.Host ?? rabbitmq.HostName;
-                    rabbitmq.Port = source.RabbitMQ.Port ?? rabbitmq.Port;
-                });
+                options.UseRabbitMQ(source.RabbitMQHost);
 
                 options.UsePostgreSql(source.ConnectionString);
             });

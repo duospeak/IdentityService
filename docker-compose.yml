@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapi
+    build:
+      context: .
+      dockerfile: src/Identity.Api/Dockerfile.develop
+  rabbitmq:
+    image: rabbitmq
+  postgres:
+    image: postgres

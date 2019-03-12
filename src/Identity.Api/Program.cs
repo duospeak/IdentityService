@@ -10,13 +10,24 @@ using Microsoft.Extensions.Logging;
 
 namespace Identity.Api
 {
+    /// <summary>
+    /// No comments
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// No comments
+        /// </summary>
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
         }
 
+        /// <summary>
+        /// No comments
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();

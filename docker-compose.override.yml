@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMQHost=rabbitmq
+      - IssuerUri=identity.api
+      - "ConnectionStrings:Master=Host=postgres"
+    ports:
+      - "80"
+  rabbitmq:
+    ports:
+      - "15672"
+  postgres:
+    ports:
+      - ""
