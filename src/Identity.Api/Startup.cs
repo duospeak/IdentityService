@@ -26,11 +26,9 @@ namespace Identity.Api
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="environment"></param>
-        public Startup(IConfiguration configuration,
-                       IHostingEnvironment environment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration.NotNull(nameof(configuration));
-            Environment = environment.NotNull(nameof(environment));
         }
 
 
@@ -38,10 +36,6 @@ namespace Identity.Api
         /// The application configuration
         /// </summary>
         public IConfiguration Configuration { get; }
-        /// <summary>
-        /// The application environment
-        /// </summary>
-        public IHostingEnvironment Environment { get; }
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
@@ -65,8 +59,11 @@ namespace Identity.Api
                 options.SwaggerDoc("identityservice", CreateIdentityServiceOpenApiInfo("v1"));
 
                 Array.ForEach(
-                    Directory.GetFiles(Environment.ContentRootPath, "*.xml", SearchOption.AllDirectories),
+                    Directory.GetFiles(AppContext.BaseDirectory, "*.xml", SearchOption.AllDirectories),
                     file => options.IncludeXmlComments(file));
+
+                options.IgnoreObsoleteActions();
+                options.IgnoreObsoleteProperties();
             });
         }
 
@@ -109,7 +106,7 @@ namespace Identity.Api
                 License = new OpenApiLicense()
                 {
                     Url = new Uri("https://github.com/opensupplychain/IdentityService/blob/master/LICENSE"),
-                    Name = "MIT"
+                    Name = "MIT License"
                 },
                 Title = "Identity Service",
                 Version = version

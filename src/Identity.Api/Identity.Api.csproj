@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <LangVersion>7.1</LangVersion>
     <UserSecretsId>5eb76dd5-ac23-4e3a-ab9e-7563eb22903f</UserSecretsId>
     <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <DocumentationFile>$(OutputPath)/$(AssemblyName).xml</DocumentationFile>
