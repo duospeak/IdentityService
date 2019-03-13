@@ -42,10 +42,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             builder.AddAuthorization(options =>
             {
-                options.AddPolicy(AuthorizationPolicies.Policy1, policy =>
-                {
-                    policy.RequireAuthenticatedUser().RequireClaim("scope", ".user.delete");
-                });
             });
 
             builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -73,8 +69,6 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.ConfigureDbContext = optionAction;
             });
-
-            builder.AddDeveloperSigningCredential();
 
             var securityKeySource = JsonConvert.DeserializeAnonymousType(File.ReadAllText("devkey.rsa"), new
             {

@@ -14,4 +14,4 @@ services:
       - "15672"
   postgres:
     ports:
-      - ""
+      - "5432"

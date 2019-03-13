@@ -38,8 +38,8 @@ namespace Identity.Api.Controllers
         /// <summary>
         /// User sign up
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
+        /// <param name="command">request parameters</param>
+        /// <returns>The user created</returns>
         [HttpPost]
         public async Task<ActionResult<UserDto>> SignUp([FromBody]SignUpCommand command)
         {

@@ -18,7 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddMediatR();
 
-            services.TryAddSingleton<IUserQueries, UserQueries>();
+            //services.TryAddSingleton<IUserQueries, UserQueries>();
 
             return services;
         }
