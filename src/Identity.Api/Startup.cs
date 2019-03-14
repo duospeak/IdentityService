@@ -25,7 +25,6 @@ namespace Identity.Api
         /// Initial
         /// </summary>
         /// <param name="configuration"></param>
-        /// <param name="environment"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration.NotNull(nameof(configuration));

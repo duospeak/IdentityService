@@ -83,7 +83,6 @@ namespace Identity.Api.Controllers
         /// Remove the user session
         /// </summary>
         /// <returns></returns>
-        [Authorize]
         [HttpDelete("session")]
         public SignOutResult SignOut()
             => SignOut(IdentityServerConstants.DefaultCookieAuthenticationScheme);
