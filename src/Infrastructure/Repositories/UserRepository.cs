@@ -34,5 +34,7 @@ namespace Infrastructure.Repositories
 
             return user;
         }
+
+        public void Update(ApplicationUser user) => _context.ApplicationUser.Update(user);
     }
 }

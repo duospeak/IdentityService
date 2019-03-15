@@ -10,8 +10,8 @@ namespace Application.Validators
     {
         public SignInCommandValidator()
         {
-            RuleFor(x => x.Password).NotEmpty();
-            RuleFor(x => x.UserName).NotEmpty();
+            RuleFor(x => x.Password).NotEmpty().MinimumLength(6).MaximumLength(20);
+            RuleFor(x => x.UserName).NotEmpty().MinimumLength(6).MaximumLength(20);
         }
     }
 }
