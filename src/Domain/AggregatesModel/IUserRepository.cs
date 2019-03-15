@@ -12,5 +12,7 @@ namespace Domain.AggregatesModel
         Task<ApplicationUser> GetAsync(string userName, CancellationToken cancellationToken = default);
 
         Task<ApplicationUser> AddAsync(ApplicationUser user, CancellationToken cancellationToken = default);
+
+        void Update(ApplicationUser user);
     }
 }

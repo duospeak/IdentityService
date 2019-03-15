@@ -5,7 +5,7 @@ namespace System
     {
         public static T NotNull<T>(this T obj, string parameterName) where T : class
         {
-            if (obj is null)
+            if (obj.IsNull())
             {
                 NotNull(parameterName, nameof(parameterName));
 
@@ -14,5 +14,8 @@ namespace System
 
             return obj;
         }
+
+        public static bool IsNull<T>(this T obj)
+            where T : class => obj is null;
     }
 }

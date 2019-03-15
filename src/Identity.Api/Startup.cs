@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using Identity.Api.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Identity.Api
 {
@@ -25,10 +21,7 @@ namespace Identity.Api
         /// Initial
         /// </summary>
         /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration.NotNull(nameof(configuration));
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration.NotNull(nameof(configuration));
 
 
         /// <summary>
@@ -63,6 +56,23 @@ namespace Identity.Api
 
                 options.IgnoreObsoleteActions();
                 options.IgnoreObsoleteProperties();
+
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Description = "IdentityService uses OAuth2 with the code grant flow.[More info](https://tools.ietf.org/html/rfc6749)",
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        AuthorizationCode = new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = new Uri("/connect/authorize", UriKind.Relative),
+                            TokenUrl = new Uri("/connect/token", UriKind.Relative),
+                            Scopes = IdentityServiceScopes.ScopeDescriptions
+                        }
+                    }
+                });
+
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
             });
         }
 
@@ -76,7 +86,7 @@ namespace Identity.Api
             app.UseIdentityServer();
 
             app.UseMvc();
-
+            
             app.UseSwagger(options =>
             {
                 options.RouteTemplate = "{documentName}/open_api.json";
@@ -86,10 +96,8 @@ namespace Identity.Api
         /// Configure the identityserver4 dbcontexts.
         /// </summary>
         /// <param name="options"></param>
-        protected virtual void ConfigureId4Context(DbContextOptionsBuilder options)
-        {
-            options.UseInMemoryDatabase("IdentityService");
-        }
+        protected virtual void ConfigureId4Context(DbContextOptionsBuilder options) 
+            => options.UseInMemoryDatabase("IdentityService");
 
         private OpenApiInfo CreateIdentityServiceOpenApiInfo(string version)
         {

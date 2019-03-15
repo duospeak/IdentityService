@@ -1,5 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using Identity.Api.Internal;
+using IdentityServer4;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -42,6 +44,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
             builder.AddAuthorization(options =>
             {
+                IdentityServiceScopes.ScopeDescriptions.ToList().ForEach(scope =>
+                {
+                    options.AddPolicy(scope.Key, policy =>
+                    {
+                        policy.RequireClaim("scope", scope.Key);
+                    });
+                });
             });
 
             builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

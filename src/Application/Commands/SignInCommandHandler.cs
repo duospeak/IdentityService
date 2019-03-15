@@ -1,11 +1,10 @@
-﻿using Application.Models;
+﻿using Application.Internal;
+using Application.Models;
 using Domain.AggregatesModel;
 using Domain.Enumerations;
 using Domain.Exceptions;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -24,28 +23,17 @@ namespace Application.Commands
         {
             var user = await _repository.GetAsync(request.UserName);
 
-            var requestPassword = Sha256(request.Password);
-
-            if (user == null || user.Password != requestPassword)
+            if (user == null || user.Password != ((PasswordString)request.Password).AsSha256())
             {
                 throw new UserDomainException(UserErrorCodes.SignInError, "Username not found or password error");
             }
 
-            if (user.Status == UserStatus.Blocked)
+            if (user.Status != UserStatus.Active)
             {
-                throw new UserDomainException(UserErrorCodes.StatusError, "user un actived");
+                throw new UserDomainException(UserErrorCodes.StatusError, $"user is {user.Status}");
             }
 
             return user.AsDto();
-        }
-
-        private string Sha256(string input)
-        {
-            using (var sHA = SHA256.Create())
-            {
-                var bytes = Encoding.UTF8.GetBytes(input);
-                return Convert.ToBase64String(sHA.ComputeHash(bytes));
-            }
         }
     }
 }

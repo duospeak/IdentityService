@@ -6,7 +6,6 @@ using Identity.Api.Extensions;
 using IdentityServer4;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -61,6 +60,31 @@ namespace Identity.Api.Controllers
             return status;
         }
         /// <summary>
+        /// Send a secret code for request a new password
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpPost("secretcode")]
+        public async Task<ActionResult> SendRequestPasswordSecretCode([FromBody]SendRequestPasswordSecretCodeCommand command)
+        {
+            await _mediator.Send(command, HttpContext.RequestAborted);
+
+            return Ok();
+        }
+        /// <summary>
+        /// Request a new password with secret code
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpPut("password")]
+        public async Task<ActionResult> RequestPassword([FromBody]RequestPasswordCommand command)
+        {
+            await _mediator.Send(command, HttpContext.RequestAborted);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Create and start user session
         /// </summary>
         /// <param name="command"></param>
@@ -86,5 +110,7 @@ namespace Identity.Api.Controllers
         [HttpDelete("session")]
         public SignOutResult SignOut()
             => SignOut(IdentityServerConstants.DefaultCookieAuthenticationScheme);
+
+
     }
 }

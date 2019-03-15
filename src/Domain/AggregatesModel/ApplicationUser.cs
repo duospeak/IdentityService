@@ -3,8 +3,6 @@ using Domain.Events;
 using Domain.Exceptions;
 using Domain.SeedWork;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.AggregatesModel
 {
@@ -30,6 +28,18 @@ namespace Domain.AggregatesModel
 
         public UserStatus Status { get; private set; }
 
+        public string SecretCode { get; private set; }
+        public string PhoneNumber { get; private set; }
+
+        public void SetSecretCode(string code)
+            => SecretCode = code.NotNull(nameof(code));
+
+        public void ClearSecretCode()
+            => SecretCode = null;
+
+        public void SetNewPassword(string password)
+            => Password = password.NotNull(nameof(password));
+
         public void Active()
         {
             if (Status == UserStatus.Active)
@@ -54,9 +64,6 @@ namespace Domain.AggregatesModel
             Status = UserStatus.Blocked;
         }
 
-        public override string ToString()
-        {
-            return $"Id:{Id}  UserName:{UserName}  CreateTime:{CreateTime}";
-        }
+        public override string ToString() => $"Id:{Id}  UserName:{UserName}  CreateTime:{CreateTime}";
     }
 }
